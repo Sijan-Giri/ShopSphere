@@ -3,6 +3,7 @@ import User from "../database/models/userModel";
 import bcrypt from "bcrypt"
 import generateToken from "../services/generateToken";
 import sendEmail from "../services/sendEmail";
+import findUser from "../services/findUser";
 
 class UserController{
     static async register(req:Request,res:Response) {
@@ -112,6 +113,77 @@ class UserController{
             message : "OTP send successfully"
         })
     } 
+
+    static async verifyOtp(req:Request,res:Response) {
+        const {otp , email} = req.body;
+        if(!otp || !email || undefined) {
+            res.status(400).json({
+                message : "Please provide otp and email"
+            })
+            return
+        }
+        const [user] = await User.findAll({
+            where : {
+                email : email
+            }
+        })
+        if(!user) {
+            res.status(400).json({
+                message : "User with this email doesn't exists"
+            })
+            return
+        }
+        const currentTime = Date.now();
+        const otpGeneratedTime = Number(user.generatedOtpTime);
+
+        if(currentTime - otpGeneratedTime >= 120000) {
+            res.status(400).json({
+                message : "Your Otp has been expired !!"
+            })
+            return
+        }
+
+        if(user.otp !== otp) {
+            res.status(400).json({
+                message : "Otp doesn't matched!"
+            })
+            return
+        }
+        res.status(200).json({
+            message : "Otp matched!!"
+        })
+    }
+
+    static async resetPassword(req:Request,res:Response) {
+        const {email , newPassword , confirmPassword} = req.body;
+        if(!email || !newPassword || !confirmPassword) {
+            res.status(400).json({
+                message : "Please provide an email , newPassword & confirmPassword"
+            })
+            return
+        }
+        const userExists = await findUser(User,email);
+
+        if(!userExists) {
+            res.status(400).json({
+                message : "User with this email doesn't exists!"
+            })
+            return
+        }
+        if(newPassword !== confirmPassword) {
+            res.status(400).json({
+                message : "New password and confirm password mismatched !!"
+            })
+            return
+        }
+
+        userExists.password = bcrypt.hashSync(confirmPassword,8);
+        await userExists.save();
+
+        res.status(200).json({
+            message : "Password reset successfully"
+        })
+    }
 }
 
 export default UserController
