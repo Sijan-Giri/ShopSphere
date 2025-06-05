@@ -47,17 +47,16 @@ class UserAuthentication{
             }
         })
     }
-    static async restrictTo(...roles:Role[]) {
+    static restrictTo(...roles:Role[]) {
         return (req:AuthRequest , res:Response , next:NextFunction) => {
-            const userRole:any = req.user?.role;
+            const userRole = req.user?.role as Role;
             if(!roles.includes(userRole)) {
                 res.status(400).json({
                     message : "You don't have permission !!"
                 })
+                return
             }
-            else {
                 next();
-            }
         }
     }
 }

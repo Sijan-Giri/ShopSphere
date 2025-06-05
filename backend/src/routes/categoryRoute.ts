@@ -1,15 +1,15 @@
 import express, { Router } from "express"
 import categoryController from "../controllers/categoryController";
-import UserAuthentication from "../middleware/isAuthenticate"
+import userAuthentication, { Role } from "../middleware/isAuthenticate"
 
 const router:Router = express.Router();
 
 router.route("/")
-.post( UserAuthentication.isAuthenticated,categoryController.addCategory)
+.post( userAuthentication.isAuthenticated, userAuthentication.restrictTo(Role.Admin) ,categoryController.addCategory)
 .get(categoryController.getCategory)
 
 router.route("/:id")
-.delete(categoryController.deleteCategory)
-.patch(categoryController.updateCategory)
+.delete(userAuthentication.isAuthenticated, userAuthentication.restrictTo(Role.Admin) ,categoryController.deleteCategory)
+.patch(userAuthentication.isAuthenticated, userAuthentication.restrictTo(Role.Admin) ,categoryController.updateCategory)
 
-export default router
+export default router;
