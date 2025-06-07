@@ -8,9 +8,9 @@ interface ProductData extends Request{
 
 class ProductController {
     static async createProduct(req:ProductData,res:Response){
-        const {productName , productDescription , productPrice , productStockQty , productDiscount , categoryId} = req.body;
+        const {productName , productDescription , productPrice , productStockQty , productDiscount , CategoryId} = req.body;
         const productImage = req.file ? req.file.filename : "https://imgs.search.brave.com/vmALrai4jbGqgkctmp3YG72pQAyqEKwNdq82U0wG2kI/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly90My5m/dGNkbi5uZXQvanBn/LzExLzA3LzU5LzE4/LzM2MF9GXzExMDc1/OTE4MDRfZURSMnVa/VFVDZ0U2bzlzOU90/c1NiN1M0M0hGUnpk/V3QuanBn";
-        if(!productName || !productDescription || !productPrice || !productStockQty || !categoryId) {
+        if(!productName || !productDescription || !productPrice || !productStockQty || !CategoryId) {
             res.status(400).json({
                 message : "Please provide productName , productDescription , productDiscount , productPrice , productStockQty , categoryId"
             })
@@ -22,7 +22,7 @@ class ProductController {
             productPrice ,
             productStockQty ,
             productDiscount : productDiscount || 0 ,
-            categoryId,
+            CategoryId,
             productImage
         })
         res.status(200).json({
@@ -59,7 +59,7 @@ class ProductController {
             return
         }
         const productExists = await Product.findByPk(id);
-        if(productExists) {
+        if(!productExists) {
             res.status(400).json({
                 message : "Product with this id doesn't exists !!"
             })
@@ -71,7 +71,8 @@ class ProductController {
             },
             include : [
                 {
-                    model : Category
+                    model : Category,
+                    attributes : ['id','categoryName']
                 }
             ]
         })
@@ -90,7 +91,7 @@ class ProductController {
             return
         }
         const productExists = await Product.findByPk(id);
-        if(productExists) {
+        if(!productExists) {
             res.status(400).json({
                 message : "Product with this id doesn't exists !!"
             })
@@ -114,16 +115,16 @@ class ProductController {
             })
             return
         }
-        const {productName , productDescription , productPrice , productStockQty , productDiscount , categoryId} = req.body;
+        const {productName , productDescription , productPrice , productStockQty , productDiscount , CategoryId} = req.body;
         const productImage = req.file ? req.file?.filename : "https://imgs.search.brave.com/vmALrai4jbGqgkctmp3YG72pQAyqEKwNdq82U0wG2kI/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly90My5m/dGNkbi5uZXQvanBn/LzExLzA3LzU5LzE4/LzM2MF9GXzExMDc1/OTE4MDRfZURSMnVa/VFVDZ0U2bzlzOU90/c1NiN1M0M0hGUnpk/V3QuanBn";
-        if(!productName || !productDescription || !productPrice || !productStockQty || !categoryId) {
+        if(!productName || !productDescription || !productPrice || !productStockQty || !CategoryId) {
             res.status(400).json({
                 message : "Please provide productName , productDescription , productDiscount , productPrice , productStockQty , categoryId"
             })
             return
         }
         const productExists = await Product.findByPk(id);
-        if(productExists) {
+        if(!productExists) {
             res.status(400).json({
                 message : "Product with this id doesn't exists !!"
             })
@@ -135,7 +136,7 @@ class ProductController {
             productPrice ,
             productStockQty ,
             productDiscount : productDiscount || 0 ,
-            categoryId,
+            CategoryId,
             productImage
         },{
             where : {

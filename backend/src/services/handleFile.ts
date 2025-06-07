@@ -7,7 +7,7 @@ const storage = multer.diskStorage({
             if(!allowedFiles.includes(file.mimetype)) {
                 return console.log("This file type is not allowed !!")
             }
-            cb(null,"./storage")
+            cb(null,"./src/storage")
         },
         filename : function(req : Request, file:Express.Multer.File, cb:any) {
             cb(null,Date.now() + "-" + file.originalname)
