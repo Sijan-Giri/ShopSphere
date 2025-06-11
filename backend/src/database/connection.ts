@@ -4,7 +4,7 @@ import Product from "./models/productModel";
 import Category from "./models/categoryModel";
 import Order from "./models/orderModel";
 import User from "./models/userModel";
-import Payment from "./models/payment";
+import Payment from "./models/paymentModel";
 import OrderDetail from "./models/orderDetailsModel";
 
 const sequelize = new Sequelize(envConfig.connectionURL as string,{

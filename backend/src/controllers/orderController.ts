@@ -2,7 +2,8 @@ import { Request, Response } from "express";
 import Order from "../database/models/orderModel";
 import OrderDetail from "../database/models/orderDetailsModel";
 import { PaymentMethod } from "../../globals/types";
-import Payment from "../database/models/payment";
+import Payment from "../database/models/paymentModel";
+import axios from "axios"
 
 export interface IProduct{
     productId : string
@@ -43,19 +44,33 @@ class OrderController {
         })
     })
 
-    if(paymentMethod == PaymentMethod.Khalti) {
-        //khalti logic
-    }
-    else {
-        await Payment.create({
+    const paymentData = await Payment.create({
             paymentMethod,
             orderId : orderData.id
-        })
+    })
+
+    if(paymentMethod == PaymentMethod.Khalti) {
+        //khalti logic
+        const data = {
+            return_url : "http://localhost:5173/",
+            website_url : "http://localhost:5173/",
+            amount : totalAmount * 100,
+            purchase_order_id : orderData.id,
+            purchase_order_name : `order_${orderData.id}`
+        }
+        const response = await axios.post("https://dev.khalti.com/api/v2/epayment/initiate/",data,{
+            headers : {
+                Authorization : "Key aacb5cd4c70f4cac9f8b252fdf2d8e46"
+            }
+        });
+        paymentData.pidx = response.data.pidx;
+        await paymentData.save()
+    res.status(200).json({
+        message : "Order created successfully !!",
+        url : response.data.payment_url
+    })
     }
 
-    res.status(200).json({
-        message : "Order created successfully !!"
-    })
 
     }
 }
