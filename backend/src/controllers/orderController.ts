@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import Order from "../database/models/orderModel";
 import OrderDetail from "../database/models/orderDetailsModel";
-import { PaymentMethod } from "../../globals/types";
+import { PaymentMethod, PaymentStatus } from "../../globals/types";
 import Payment from "../database/models/paymentModel";
 import axios from "axios"
 
@@ -67,11 +67,61 @@ class OrderController {
         await paymentData.save()
     res.status(200).json({
         message : "Order created successfully !!",
-        url : response.data.payment_url
+        url : response.data.payment_url,
+        pidx : response.data.pidx
     })
     }
+    }
 
-
+    static async verifyTransaction(req:AuthRequest,res:Response) {
+        const {pidx} = req.body;
+        if(!pidx) {
+            res.status(400).json({
+                message : "Please provide pidx"
+            })
+            return
+        }
+        const response = await axios.post("https://dev.khalti.com/api/v2/epayment/lookup/",{pidx} ,{
+            headers : {
+                Authorization : "Key aacb5cd4c70f4cac9f8b252fdf2d8e46"
+            }
+        })
+        
+        if(response.data.status === "Completed") {
+            await Payment.update({paymentStatus : PaymentStatus.Paid},{
+                where : {
+                    pidx : pidx
+                }
+            })
+            res.status(200).json({
+                message : "Payment Verified !!"
+            })
+        }
+        else if(response.data.status === "Pending") {
+            res.status(200).json({
+                message : "Payment is pending !!"
+            })
+        }
+        else if(response.data.status === "Initiated") {
+            res.status(200).json({
+                message : "Payment initiated !!"
+            })
+        }
+        else if(response.data.status === "Refunded") {
+            res.status(200).json({
+                message : "Payment refunded !!"
+            })
+        }
+        else if(response.data.status === "Expired") {
+            res.status(200).json({
+                message : "Payment expired !!"
+            })
+        }
+        else if(response.data.status === "User canceled") {
+            res.status(200).json({
+                message : "Payment canceled by user !!"
+            })
+        }
     }
 }
 
