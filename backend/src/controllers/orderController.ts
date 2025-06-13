@@ -10,7 +10,7 @@ export interface IProduct{
     productQty : string
 }
 
-interface AuthRequest extends Request {
+export interface AuthRequest extends Request {
     user? : {
         id : string
     }
