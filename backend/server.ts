@@ -5,6 +5,7 @@ import categoryController from "./src/controllers/categoryController";
 import { Server } from "socket.io"
 import jwt from "jsonwebtoken"
 import User from "./src/database/models/userModel";
+import Order from "./src/database/models/orderModel";
 
 const port = envConfig.port
 
@@ -31,16 +32,36 @@ io.on("connection",(socket) => {
     if(token) {
         jwt.verify(token,envConfig.secretKey as string,async(err:any,result:any) => {
             if(err) {
-                socket.emit("Error",err);
+                io.emit("Error",err);
             }
             else {
                 const userExists = await User.findByPk(result.id);
                 if(!userExists) {
-                    socket.emit("User doesnot exists with this id");
+                    io.emit("User doesnot exists with this id");
                     return
                 }
                 addToOnlineUsers(socket.id , result.id , userExists.role)
             }
         })
     }
+    else {
+        socket.emit("Please provide token !!")
+    }
+    socket.on("updateOrderStatus",async(data) => {
+        const {userId , orderId , status} = data;
+        const findUser = onlineUsers.find(user => user.userId == userId);
+        await Order.update({
+            orderStatus : status
+        },{
+            where : {
+                orderId
+            }
+        })
+        if(findUser) {
+            io.to(findUser.socketId).emit("Order updated successfully !!")
+        } 
+        else {
+            socket.emit("User is not online !!")
+        }
+    })
 })
