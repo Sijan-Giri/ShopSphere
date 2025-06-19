@@ -45,3 +45,21 @@ export function registerUser(data:IUser) {
         }
     }
 } 
+
+export function loginUser (data : IUser) {
+    return async function loginUserThunk(dispatch : AppDispatch) {
+        try {
+            dispatch(setStatus(Status.Loading));
+            const response = await axios.post("http://localhost:3000/api/auth/login",data);
+            if(response.status == 200) {
+                dispatch(setStatus(Status.Success))
+            }
+            else {
+                dispatch(setStatus(Status.Error))
+            }
+        } catch (error) {
+            dispatch(setStatus(Status.Error));
+            console.log(error)
+        }
+    }
+}

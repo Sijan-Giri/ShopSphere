@@ -1,18 +1,17 @@
-import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { registerUser, setStatus } from "../../store/userSlice";
-import { Link, useNavigate } from "react-router-dom";
-import { Status } from "../../globals/types/types";
+import { useEffect, useState, type ChangeEvent, type FormEvent } from "react"
+import { Link, useNavigate } from "react-router-dom"
+import { useAppDispatch, useAppSelector } from "../../store/hooks"
+import { loginUser, setStatus } from "../../store/userSlice"
+import { Status } from "../../globals/types/types"
 
-const Register = () => {
+const Login = () => {
 
     const dispatch = useAppDispatch();
-    const {status} = useAppSelector((state) => state.user);
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const {status , user} = useAppSelector((state) => state.user)
 
     const [data , setData] = useState({
-        username : "",
-        email : "",
+        email : '',
         password : ""
     })
 
@@ -26,38 +25,30 @@ const Register = () => {
 
     const handleSubmit = (e:FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        dispatch(registerUser(data));
+        dispatch(loginUser(data))
     }
 
     useEffect(() => {
-      if(status == Status.Success) {
-          navigate("/login")
-          dispatch(setStatus(Status.Loading))
+        if(status == Status.Success) {
+            navigate("/")
+            dispatch(setStatus(Status.Loading))
         }
-    },[status,dispatch,navigate])
-
+    },[status,navigate,dispatch])
   return (
     <>
-      <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center">
+          <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center">
   <div className="max-w-screen-xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
     <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
       <div className="mt-12 flex flex-col items-center">
         <div className="w-full flex-1 mt-8">
           <div className="my-12 border-b text-center">
             <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
-              Sign up with e-mail
+              Log In with e-mail , {user?.username}
             </div>
           </div>
 
           <form onSubmit={handleSubmit}>
             <div className="mx-auto max-w-xs">
-              <input
-                className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
-                type="text"
-                placeholder="Username"
-                name="username"
-                onChange={handleChange}
-              />
               <input
                 className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
                 type="email"
@@ -87,14 +78,14 @@ const Register = () => {
                   <circle cx="8.5" cy="7" r="4" />
                   <path d="M20 8v6M23 11h-6" />
                 </svg>
-                <span className="ml-3">Sign Up</span>
+                <span className="ml-3">Log In</span>
               </button>
             </div>
           </form>
           <div className="mt-4 text-gray-600 text-center">
-            <span className="text-sm">Already have an account? </span>
-            <Link to="/login" className="text-indigo-500 hover:text-indigo-700 font-semibold">
-              Log In
+            <span className="text-sm">Don't have an account? </span>
+            <Link to="/register" className="text-indigo-500 hover:text-indigo-700 font-semibold">
+              Sign Up
             </Link>
           </div>
         </div>
@@ -111,9 +102,8 @@ const Register = () => {
     </div>
   </div>
 </div>
-
     </>
-  );
-};
+  )
+}
 
-export default Register;
+export default Login
