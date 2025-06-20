@@ -1,6 +1,23 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import { useAppSelector } from "../../store/hooks";
+import { useEffect, useState } from "react";
 
 const Navbar = () => {
+
+    const navigate = useNavigate();
+    const {token} = useAppSelector((state) => state.user)
+    const localStorageToken = localStorage.getItem("token")
+     const [isLoggedIn , setIsLoggedIn] = useState<boolean>(false);
+
+    useEffect(() => {
+            setIsLoggedIn(!!token || !!localStorageToken)
+    },[])
+
+    const handleClick = () => {
+        localStorage.removeItem("token");
+        navigate("/login");
+    }
+
   return (
     <>
     <header className="sticky top-0 bg-white shadow">
@@ -19,15 +36,26 @@ const Navbar = () => {
                 </div><Link to="/">Shop-Sphere</Link>
             </div>
             <div className="flex mt-4 sm:mt-0">
-                <a className="px-4" href="#features">Products</a>
+                <a className="px-4" href="#products">Products</a>
                 <a className="px-4" href="#services">Services</a>
                 <a className="px-4" href="#stats">Stats</a>
                 <a className="px-4" href="#testimonials">Testimonials</a>
             </div>
             <div className="hidden md:block">
+                {
+                    isLoggedIn ? <button type="button"
+                    className=" py-3 px-8 text-sm bg-teal-500 hover:bg-teal-600 rounded text-white" onClick={handleClick}>Log Out
+                </button> : 
+                <>
                 <Link to="/register"><button type="button"
-                    className=" py-3 px-8 text-sm bg-teal-500 hover:bg-teal-600 rounded text-white ">Sign Up
+                    className=" mr-8 py-3 px-8 text-sm bg-teal-500 hover:bg-teal-600 rounded text-white ">Register
                 </button></Link>
+                <Link to="/login"><button type="button"
+                    className=" py-3 px-8 text-sm bg-teal-500 hover:bg-teal-600 rounded text-white ">Login
+                </button></Link>
+                </>
+                
+                }
             </div>
         </div>
     </header>

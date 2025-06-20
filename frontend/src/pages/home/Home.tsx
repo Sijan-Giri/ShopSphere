@@ -383,9 +383,9 @@ const Home = () => {
         </section>
 
 
-        <section id="features" className="py-20 lg:pb-40 lg:pt-48">
+        <section id="products" className="py-20 lg:pb-40 lg:pt-48">
             <div className="container mx-auto text-center">
-                <h2 className="text-3xl lg:text-5xl font-semibold">Main Features</h2>
+                <h2 className="text-3xl lg:text-5xl font-semibold">Our Products</h2>
                 <div className="flex flex-col sm:flex-row sm:-mx-3 mt-12">
                     <div className="flex-1 px-3">
                         <div className="p-12 rounded-lg border border-solid border-gray-200 mb-8"

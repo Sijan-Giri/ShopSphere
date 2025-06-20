@@ -14,5 +14,6 @@ export interface IUser{
 
 export interface IUserState {
     user : IUser,
-    status : string
+    status : string,
+    token : string | null
 }

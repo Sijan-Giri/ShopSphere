@@ -9,7 +9,8 @@ const initialState : IUserState = {
         email : '',
         password : ''
     },
-    status : Status.Loading
+    status : Status.Loading,
+    token : ''
 }
 
 const userSlice = createSlice({
@@ -21,11 +22,14 @@ const userSlice = createSlice({
         },
         setStatus(state:IUserState,action:PayloadAction<Status>) {
             state.status = action.payload
+        },
+        setToken(state:IUserState,action:PayloadAction<string>) {
+            state.token = action.payload
         }
     }
 })
 
-export const {setUser , setStatus} = userSlice.actions;
+export const {setUser , setStatus , setToken} = userSlice.actions;
 export default userSlice.reducer;
 
 export function registerUser(data:IUser) {
@@ -53,6 +57,13 @@ export function loginUser (data : IUser) {
             const response = await axios.post("http://localhost:3000/api/auth/login",data);
             if(response.status == 200) {
                 dispatch(setStatus(Status.Success))
+                if(response.data.token) {
+                    localStorage.setItem("token",response.data.token)
+                    dispatch(setToken(response.data.token))
+                }
+                else {
+                    dispatch(setStatus(Status.Error))
+                }
             }
             else {
                 dispatch(setStatus(Status.Error))

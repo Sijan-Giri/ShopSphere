@@ -43,7 +43,7 @@ const Login = () => {
         <div className="w-full flex-1 mt-8">
           <div className="my-12 border-b text-center">
             <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
-              Log In with e-mail , {user?.username}
+              Log In with e-mail <h1 className="text-2xl">{user?.username}</h1>
             </div>
           </div>
 
