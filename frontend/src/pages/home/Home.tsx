@@ -1,6 +1,16 @@
+import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../../store/hooks"
 import Navbar from "../navbar/Navbar"
+import Card from "./Card"
+import { getAllProducts } from "../../store/productSlice";
 
 const Home = () => {
+    const dispatch = useAppDispatch();
+    const {product:products} = useAppSelector((state) => state.product);
+
+    useEffect(() => {
+        dispatch(getAllProducts())
+    },[])
   return (
     <>
 <div>
@@ -18,8 +28,6 @@ const Home = () => {
     </p>
     <p className="mt-4 text-gray-600">Free shipping on all orders! Shop with confidence and find exactly what you're looking for.</p>
 </div>
-
-
                 <div className="lg:w-1/2">
       <svg
       data-name="Layer 1"
@@ -381,56 +389,22 @@ const Home = () => {
                 </div>
            </div>
         </section>
-
-
         <section id="products" className="py-20 lg:pb-40 lg:pt-48">
             <div className="container mx-auto text-center">
                 <h2 className="text-3xl lg:text-5xl font-semibold">Our Products</h2>
-                <div className="flex flex-col sm:flex-row sm:-mx-3 mt-12">
-                    <div className="flex-1 px-3">
-                        <div className="p-12 rounded-lg border border-solid border-gray-200 mb-8"
-                            style={{
-        boxShadow: '0 10px 28px rgba(0, 0, 0, 0.08)',
-      }}>
-                            <p className="font-semibold text-xl">Service One
-
-                            </p>
-                            <p className="mt-4">An enim nullam tempor gravida donec enim ipsum blandit porta justo
-                                integer odio velna vitae auctor integer.
-                            </p>
-                        </div>
-                    </div>
-                    <div className="flex-1 px-3">
-                        <div className="p-12 rounded-lg border border-solid border-gray-200 mb-8"
-                            style={{
-        boxShadow: '0 10px 28px rgba(0, 0, 0, 0.08)',
-      }}>
-                            <p className="font-semibold text-xl">Service Two
-                            </p>
-                            <p className="mt-4">An enim nullam tempor gravida donec enim ipsum blandit porta justo
-                                integer odio velna vitae auctor integer.
-                            </p>
-                        </div>
-                    </div>
-                    <div className="flex-1 px-3">
-                        <div className="p-12 rounded-lg border border-solid border-gray-200 mb-8"
-                            style={{
-        boxShadow: '0 10px 28px rgba(0, 0, 0, 0.08)',
-      }}>
-                            <p className="font-semibold text-xl">Service Three
-
-                            </p>
-                            <p className="mt-4">An enim nullam tempor gravida donec enim ipsum blandit porta justo
-                                integer odio velna vitae auctor integer.
-                            </p>
-                        </div>
-                    </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-18">
+                {
+                    products?.length > 0 && products?.map((product) => {
+                        return (
+                            <>
+                            <Card key={product?.id} product={product} />
+                            </>
+                        )
+                    })
+                }
                 </div>
             </div>
         </section>
-
-
-
         <section id="services" className="py-20">
             <div className="container mx-auto px-16 items-center flex flex-col lg:flex-row">
                 <div className="lg:w-1/2">

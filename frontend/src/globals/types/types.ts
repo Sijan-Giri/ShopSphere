@@ -17,3 +17,19 @@ export interface IUserState {
     status : string,
     token : string | null
 }
+
+export interface IProduct{
+    id : string,
+    productName : string,
+    productDescription : string,
+    productPrice : number,
+    productStockQty : number,
+    productDiscount : number,
+    productImage ?: string,
+    CategoryId : string
+}
+
+export interface IProductState{
+    product : IProduct[],
+    status : string
+}
