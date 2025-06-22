@@ -18,6 +18,11 @@ export interface IUserState {
     token : string | null
 }
 
+export interface ICategory{
+    id : string,
+    categoryName : string
+}
+
 export interface IProduct{
     id : string,
     productName : string,
@@ -26,10 +31,12 @@ export interface IProduct{
     productStockQty : number,
     productDiscount : number,
     productImage ?: string,
-    CategoryId : string
+    CategoryId : string,
+    Category : ICategory
 }
 
 export interface IProductState{
     product : IProduct[],
-    status : string
+    status : string,
+    singleProduct : IProduct | null
 }
