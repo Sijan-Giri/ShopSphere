@@ -24,14 +24,25 @@ class CartController{
             await userProductAlreadyAdddedToCart.save()
         }
         else {
-            var cart = await Cart.create({
+            await Cart.create({
                 userId,
                 productId,
                 quantity
             })
         }
+        const cartData = await Cart.findAll({
+            where : {
+                userId
+            },
+            include : [
+                {
+                    model : Product
+                }
+            ]
+        })
         res.status(200).json({
-            message : "Product added to cart successfully"
+            message : "Product added to cart successfully",
+            data : cartData
         })
     }
 

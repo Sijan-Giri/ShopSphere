@@ -3,12 +3,19 @@ import { useAppDispatch, useAppSelector } from "../../store/hooks"
 import Navbar from "../navbar/Navbar"
 import { fetchProduct } from "../../store/productSlice";
 import { useParams } from "react-router-dom";
+import { addToCart } from "../../store/cartSlice";
 
 const ProductDetail = () => {
 
     const dispatch = useAppDispatch();
     const {singleProduct} = useAppSelector((state) => state.product)
-    const {id} = useParams()
+    const {id} = useParams();
+
+    const handleClick = () => {
+      if(id) {
+        dispatch(addToCart(id))
+      }
+    }
 
     useEffect(() => {
             if(id) {
@@ -74,7 +81,7 @@ return (
             </svg>
           </button>
         </div>
-        <button className="h-[51px] px-20 py-4 bg-[#00b206] rounded-[43px] justify-center items-center gap-4 flex">
+        <button onClick={handleClick} className="h-[51px] px-20 py-4 bg-[#00b206] rounded-[43px] justify-center items-center gap-4 flex">
           <span className="text-white text-base font-semibold leading-tight">Add to Cart</span>
           <div>
             <svg width={17} height={18} viewBox="0 0 17 18" fill="none" xmlns="http://www.w3.org/2000/svg">

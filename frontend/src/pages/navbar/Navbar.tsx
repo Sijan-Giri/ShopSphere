@@ -41,25 +41,40 @@ const Navbar = () => {
                 <a className="px-4" href="#stats">Stats</a>
                 <a className="px-4" href="#testimonials">Testimonials</a>
             </div>
-            <div className="hidden md:block">
-                {
-                    isLoggedIn ? <button type="button"
-                    className=" py-3 px-8 text-sm bg-teal-500 hover:bg-teal-600 rounded text-white" onClick={handleClick}>Log Out
-                </button> : 
-                <>
-                <Link to="/register"><button type="button"
-                    className=" mr-8 py-3 px-8 text-sm bg-teal-500 hover:bg-teal-600 rounded text-white ">Register
-                </button></Link>
-                <Link to="/login"><button type="button"
-                    className=" py-3 px-8 text-sm bg-teal-500 hover:bg-teal-600 rounded text-white ">Login
-                </button></Link>
-                </>
-                
-                }
+            <div className="flex items-center space-x-4">
+                <Link to="/my-cart">
+                    <button className="relative flex items-center px-4 py-2 bg-teal-500 hover:bg-teal-600 text-white rounded">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6 mr-2">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h18l-2 14H5L3 3z"/>
+                        </svg>
+                        <span>Cart</span>
+                        <span className="absolute top-0 right-0 block w-5 h-4 text-xs text-white bg-red-500 rounded-full text-center">
+                            1  
+                        </span>
+                    </button>
+                </Link>
+                <div className="hidden md:block">
+                    {isLoggedIn ? (
+                        <button type="button"
+                            className="py-3 px-8 text-sm bg-teal-500 hover:bg-teal-600 rounded text-white" onClick={handleClick}>
+                            Log Out
+                        </button>
+                    ) : (
+                        <>
+                            <Link to="/register"><button type="button"
+                                className="mr-8 py-3 px-8 text-sm bg-teal-500 hover:bg-teal-600 rounded text-white">Register
+                            </button></Link>
+                            <Link to="/login"><button type="button"
+                                className="py-3 px-8 text-sm bg-teal-500 hover:bg-teal-600 rounded text-white">Login
+                            </button></Link>
+                        </>
+                    )}
+                </div>
             </div>
         </div>
     </header>
-    </>
+</>
+
   )
 }
 

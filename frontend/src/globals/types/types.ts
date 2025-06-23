@@ -40,3 +40,16 @@ export interface IProductState{
     status : string,
     singleProduct : IProduct | null
 }
+
+export interface ICart{
+    id : string,
+    quantity : number,
+    productId : string,
+    userId : string,
+    Product : IProduct
+}
+
+export interface ICartState{
+    cart : ICart[],
+    status : string
+}
