@@ -1,16 +1,20 @@
 import { Link, useNavigate } from "react-router-dom"
-import { useAppSelector } from "../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { useEffect, useState } from "react";
+import { fetchMyCartItems } from "../../store/cartSlice";
 
 const Navbar = () => {
 
     const navigate = useNavigate();
-    const {token} = useAppSelector((state) => state.user)
+    const dispatch = useAppDispatch()
+    const {token} = useAppSelector((state) => state.user);
+    const {cart:carts} = useAppSelector((state) => state.cart);
     const localStorageToken = localStorage.getItem("token")
      const [isLoggedIn , setIsLoggedIn] = useState<boolean>(false);
 
     useEffect(() => {
-            setIsLoggedIn(!!token || !!localStorageToken)
+            setIsLoggedIn(!!token || !!localStorageToken);
+            dispatch(fetchMyCartItems())
     },[])
 
     const handleClick = () => {
@@ -49,7 +53,7 @@ const Navbar = () => {
                         </svg>
                         <span>Cart</span>
                         <span className="absolute top-0 right-0 block w-5 h-4 text-xs text-white bg-red-500 rounded-full text-center">
-                            1  
+                            {carts.length > 0 ? carts.length : 0}  
                         </span>
                     </button>
                 </Link>

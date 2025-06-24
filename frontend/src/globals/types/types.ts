@@ -53,3 +53,8 @@ export interface ICartState{
     cart : ICart[],
     status : string
 }
+
+export interface ICartUpdatedItem{
+    productId : string,
+    quantity : number
+}
