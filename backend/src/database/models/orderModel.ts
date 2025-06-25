@@ -17,14 +17,7 @@ class Order extends Model{
 
     @Column({
         type : DataType.STRING, 
-        allowNull : false,
-        validate : {
-            len : {
-                args : [10,10],
-                msg : "Phone number must be greater than 10"
-            }
-        }
-        
+        allowNull : false
     })
     declare phoneNumber : string
 
@@ -43,6 +36,21 @@ class Order extends Model{
         defaultValue : OrderStatus.Pending
     })
     declare orderStatus : string
+    
+    @Column({
+        type : DataType.STRING
+    })
+    declare firstName : string
+
+    @Column({
+        type : DataType.STRING
+    })
+    declare lastName : string
+
+    @Column({
+        type : DataType.STRING
+    })
+    declare email : string
 }
 
 export default Order

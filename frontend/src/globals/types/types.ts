@@ -1,10 +1,8 @@
-
 export enum Status{
     Loading = "loading",
     Success = "success",
     Error = "error"
 }
-
 
 export interface IUser{
     username ?: string,
@@ -57,4 +55,38 @@ export interface ICartState{
 export interface ICartUpdatedItem{
     productId : string,
     quantity : number
+}
+
+export interface IOrderData{
+    id ?: string,
+    firstName : string,
+    lastName : string,
+    email : string,
+    phoneNumber : string,
+    shippingAddress : string,
+    totalAmount ?: number,
+    userId ?: string,
+    paymentMethod ?: PaymentMethod,
+    products ?: IProductData[]
+}
+
+export interface IProductData{
+    productQty : number,
+    productId : string,
+}
+
+export interface IOrder extends IProductData{
+    orderId : string,
+    userId : string
+}
+
+export interface IOrderState{
+    item : IOrder[],
+    status : Status,
+    khaltiUrl : string | null
+}
+
+export enum PaymentMethod{
+    Khalti = "khalti",
+    Cod = "cod"
 }

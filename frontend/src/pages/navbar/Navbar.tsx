@@ -49,7 +49,7 @@ const Navbar = () => {
                 <Link to="/my-cart">
                     <button className="relative flex items-center px-4 py-2 bg-teal-500 hover:bg-teal-600 text-white rounded">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6 mr-2">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h18l-2 14H5L3 3z"/>
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h18l-2 14H5L3 3z"/>
                         </svg>
                         <span>Cart</span>
                         <span className="absolute top-0 right-0 block w-5 h-4 text-xs text-white bg-red-500 rounded-full text-center">

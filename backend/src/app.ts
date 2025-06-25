@@ -15,7 +15,8 @@ app.use(cors({
 
 app.use(express.static("./src/storage"))
 
-app.use(express.json())
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/auth",userRoute);
 app.use("/api/category",categoryRoute)

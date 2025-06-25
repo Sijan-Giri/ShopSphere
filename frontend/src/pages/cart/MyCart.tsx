@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { deleteMyCartItem, updateCartItem } from "../../store/cartSlice";
 import { useAppDispatch, useAppSelector } from "../../store/hooks"
 import Navbar from "../navbar/Navbar"
@@ -94,7 +95,7 @@ const MyCart = () => {
         <span className="font-bold">{total}</span>
       </div>
       <div className="flex justify-center mt-6">
-        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Checkout</button>
+        <Link to='/my-checkout'><button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Checkout</button></Link>
       </div>
     </div>
   </div>

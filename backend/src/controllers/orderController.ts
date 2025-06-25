@@ -4,10 +4,11 @@ import OrderDetail from "../database/models/orderDetailsModel";
 import { PaymentMethod, PaymentStatus } from "../../globals/types";
 import Payment from "../database/models/paymentModel";
 import axios from "axios"
+import Cart from "../database/models/cartModel";
 
 export interface IProduct{
     productId : string
-    productQty : string
+    productQty : number
 }
 
 export interface AuthRequest extends Request {
@@ -19,28 +20,39 @@ export interface AuthRequest extends Request {
 class OrderController {
     static async createOrder(req:AuthRequest,res:Response){
         const userId = req.user?.id;
-        const {phoneNumber , shippingAddress , totalAmount , paymentMethod} = req.body;
+        const {firstName , lastName , email ,phoneNumber , shippingAddress , totalAmount , paymentMethod} = req.body;
         const products:IProduct[] = req.body.products
-    if(!phoneNumber || !shippingAddress || !totalAmount || products.length == 0) {
+    if(!firstName || !lastName || !email || !phoneNumber || !shippingAddress || !totalAmount || products.length == 0 || !paymentMethod) {
         res.status(400).json({
-            message : "Please provide phoneNumber , shippingAddress , totalAmount , products"
+            message : "Please provide firstName , lastName , email phoneNumber , shippingAddress , totalAmount , products , paymentMethod"
         })
         return
     }
 
     const orderData = await Order.create({
+        firstName,
+        lastName,
+        email,
         phoneNumber,
         shippingAddress,
         totalAmount,
         userId : userId
     })
 
+    let data;
+
     products.forEach(async(product) => {
-        await OrderDetail.create({
+        data = await OrderDetail.create({
             quantity : product.productQty,
             productId : product.productId,
             orderId : orderData.id,
             userId : userId
+        })
+        await Cart.destroy({
+            where : {
+                userId,
+                productId : product.productId
+            }
         })
     })
 
@@ -64,13 +76,20 @@ class OrderController {
             }
         });
         paymentData.pidx = response.data.pidx;
-        await paymentData.save()
-    res.status(200).json({
-        message : "Order created successfully !!",
-        url : response.data.payment_url,
-        pidx : response.data.pidx
-    })
+        await paymentData.save();
+
+
+        res.status(200).json({
+            message : "Order created successfully !!",
+            url : response.data.payment_url,
+            pidx : response.data.pidx,
+            data
+        })
     }
+    res.status(200).json({
+        message : "Order created successfully",
+        data
+    })
     }
 
     static async verifyTransaction(req:AuthRequest,res:Response) {

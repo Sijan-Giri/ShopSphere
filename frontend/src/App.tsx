@@ -6,6 +6,7 @@ import Home from "./pages/home/Home"
 import Login from "./pages/user/Login"
 import ProductDetail from "./pages/product/ProductDetail"
 import MyCart from "./pages/cart/MyCart"
+import Checkout from "./pages/checkout/Checkout"
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
       <Route path="/login" element={<Login />}/>
       <Route path="/product-detail/:id" element={<ProductDetail />} />
       <Route path="/my-cart" element={<MyCart />}/>
+      <Route path="/my-checkout" element={<Checkout />}/>
      </Routes>
      </BrowserRouter>
      </Provider>
