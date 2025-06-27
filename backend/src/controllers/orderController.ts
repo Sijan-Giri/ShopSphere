@@ -24,7 +24,7 @@ class OrderController {
         const products:IProduct[] = req.body.products
     if(!firstName || !lastName || !email || !phoneNumber || !shippingAddress || !totalAmount || products.length == 0 || !paymentMethod) {
         res.status(400).json({
-            message : "Please provide firstName , lastName , email phoneNumber , shippingAddress , totalAmount , products , paymentMethod"
+            message : "Please provide firstName , lastName , email , phoneNumber , shippingAddress , totalAmount , products , paymentMethod"
         })
         return
     }
@@ -37,6 +37,11 @@ class OrderController {
         shippingAddress,
         totalAmount,
         userId : userId
+    })
+
+    const paymentData = await Payment.create({
+            paymentMethod,
+            orderId : orderData.id
     })
 
     let data;
@@ -54,11 +59,6 @@ class OrderController {
                 productId : product.productId
             }
         })
-    })
-
-    const paymentData = await Payment.create({
-            paymentMethod,
-            orderId : orderData.id
     })
 
     if(paymentMethod == PaymentMethod.Khalti) {
@@ -85,6 +85,7 @@ class OrderController {
             pidx : response.data.pidx,
             data
         })
+        return
     }
     res.status(200).json({
         message : "Order created successfully",

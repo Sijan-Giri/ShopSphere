@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import Navbar from "../navbar/Navbar"
 import { useAppDispatch, useAppSelector } from "../../store/hooks"
-import { useState, type ChangeEvent, type FormEvent } from "react";
+import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 import { PaymentMethod, type IOrderData } from "../../globals/types/types";
 import { createOrder } from "../../store/checkoutSlice";
 
@@ -12,6 +12,9 @@ const Checkout = () => {
   const subtotal = carts?.reduce((acc, product) => acc + product?.Product?.productPrice * product?.quantity, 0)
   const shipping = 100;
   const total = subtotal + shipping
+  const {khaltiUrl} = useAppSelector((state) => state.checkout)
+
+  const [paymentMethod , setPaymentMethod] = useState<PaymentMethod>(PaymentMethod.Cod)
 
   const [data , setData] = useState<IOrderData>({
     firstName : "",
@@ -32,6 +35,14 @@ const Checkout = () => {
     })
   }
 
+  const handlePaymentMethod = (paymentData : PaymentMethod) => {
+    setPaymentMethod(paymentData);
+    setData({
+      ...data,
+      paymentMethod : paymentData
+    })
+  }
+
   const handleSubmit = (e:FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const productData = carts.length > 0 ? carts.map((cart) => {
@@ -45,8 +56,14 @@ const Checkout = () => {
       products : productData,
       totalAmount : total
     }
-    dispatch(createOrder(finalData))
+    dispatch(createOrder(finalData));
   }
+
+  useEffect(() => {
+    if(khaltiUrl) {
+      window.location.href = khaltiUrl
+    }
+  },[khaltiUrl])
 
   return (
     <>
@@ -145,10 +162,10 @@ const Checkout = () => {
               <input
                 type="radio"
                 name="method"
-                value="card"
+                value={PaymentMethod.Cod}
+                onChange={(e)=>handlePaymentMethod(e.target.value as PaymentMethod)}
                 id="card"
                 // checked='card'
-                // onChange={handlePaymentMethodChange}
                 className="w-5 h-5 cursor-pointer"
               />
               <label htmlFor="card" className="ml-4 flex gap-2 cursor-pointer">
@@ -170,7 +187,8 @@ const Checkout = () => {
               <input
                 type="radio"
                 name="method"
-                value="paypal"
+                onChange={(e)=>handlePaymentMethod(e.target.value as PaymentMethod)}
+                value={PaymentMethod.Khalti}
                 id="paypal"
                 className="w-5 h-5 cursor-pointer"
               />
@@ -242,12 +260,20 @@ const Checkout = () => {
               </ul>
 
               <div className="space-y-4 mt-8">
-                <button
+                {
+                  paymentMethod == PaymentMethod.Cod ? <button
                   type="submit"
                   className="rounded-md px-4 py-2.5 w-full text-sm font-medium tracking-wide bg-blue-600 hover:bg-blue-700 text-white cursor-pointer"
                 >
                   Complete Purchase
+                </button> :
+                <button
+                  type="submit"
+                  className="rounded-md px-4 py-2.5 w-full text-sm font-medium tracking-wide bg-purple-600 hover:bg-purple-700 text-white cursor-pointer"
+                >
+                  Pay with khalti
                 </button>
+                }
                 <Link to="/">
                   <button
                     type="button"
