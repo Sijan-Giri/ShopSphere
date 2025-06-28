@@ -46,3 +46,20 @@ export function createOrder(data:IOrderData) {
         }
     }
 }
+
+export function fetchMyOrders() {
+    return async function fetchMyOrdersThunk(dispatch:AppDispatch) {
+        try {
+            const response = await AuthApi.get("orders");
+            if(response.status == 200) {
+                dispatch(setStatus(Status.Success));
+                dispatch(setItem(response.data.data))
+            }
+            else {
+                dispatch(setStatus(Status.Error))
+            }
+        } catch (error) {
+            dispatch(setStatus(Status.Error))
+        }
+    }
+}

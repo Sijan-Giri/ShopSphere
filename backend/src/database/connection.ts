@@ -34,8 +34,8 @@ Category.hasOne(Product);
 User.hasMany(Order , {foreignKey : "userId"})
 Order.belongsTo(User ,{foreignKey : "userId"});
 
-Order.hasMany(Payment , {foreignKey : "orderId"});
-Payment.belongsTo(Order , {foreignKey : "orderId"});
+Payment.hasOne(Order , {foreignKey : "paymentId"});
+Order.belongsTo(Payment , {foreignKey : "paymentId"});
 
 Order.hasMany(OrderDetail,{foreignKey : "orderId"});
 OrderDetail.belongsTo(Order,{foreignKey : "orderId"});

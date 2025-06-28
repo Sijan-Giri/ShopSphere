@@ -29,6 +29,14 @@ class OrderController {
         return
     }
 
+
+    const paymentData = await Payment.create({
+            paymentMethod
+    })
+
+    let data;
+
+    
     const orderData = await Order.create({
         firstName,
         lastName,
@@ -36,15 +44,9 @@ class OrderController {
         phoneNumber,
         shippingAddress,
         totalAmount,
-        userId : userId
+        userId : userId,
+        paymentId : paymentData.id
     })
-
-    const paymentData = await Payment.create({
-            paymentMethod,
-            orderId : orderData.id
-    })
-
-    let data;
 
     products.forEach(async(product) => {
         data = await OrderDetail.create({
@@ -140,6 +142,51 @@ class OrderController {
         else if(response.data.status === "User canceled") {
             res.status(200).json({
                 message : "Payment canceled by user !!"
+            })
+        }
+    }
+
+    static async fetchMyOrders(req:AuthRequest,res:Response) {
+        const userId = req.user?.id;
+        const userOrder = await Order.findAll({
+            where : {
+                userId
+            },
+            include : [
+                {
+                    model : Payment,
+                    attributes : ["paymentMethod","paymentStatus"]
+                }
+            ]
+        });
+        if(userOrder.length == 0) {
+            res.status(404).json({
+                message : "Order with this user not found !!"
+            })
+            return
+        }
+        res.status(200).json({
+            message : "Orders fetched successfully",
+            data : userOrder
+        })
+    }
+
+    static async fetchMyOrderDetails(req:AuthRequest,res:Response) {
+        const orderId = req.params.id
+        const orders = await OrderDetail.findAll({
+            where : {
+                orderId
+            }
+        })
+        if(orders.length == 0) {
+            res.status(400).json({
+                message : "No orders found !!"
+            })
+        }
+        else {
+            res.status(200).json({
+                message : "Order details fetched successfully",
+                data : orders
             })
         }
     }

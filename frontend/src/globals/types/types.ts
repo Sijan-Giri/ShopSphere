@@ -76,6 +76,7 @@ export interface IProductData{
 }
 
 export interface IOrder extends IProductData{
+    id : string,
     orderId : string,
     userId : string
 }
