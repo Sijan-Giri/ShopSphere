@@ -81,10 +81,33 @@ export interface IOrder extends IProductData{
     userId : string
 }
 
+export interface IPayment {
+    paymentMethod : string,
+    paymentStatus : string
+}
+
+export interface IMyOrder {
+     id : string,
+    phoneNumber: string,
+    shippingAddress: string,
+    totalAmount: number,
+    orderStatus: string,
+    firstName: string,
+    lastName: string,
+    email: string,
+    createdAt?: string,
+    updatedAt?: string,
+    userId: string,
+    paymentId: string | null,
+    Payment : IPayment | null
+}
+
 export interface IOrderState{
     item : IOrder[],
     status : Status,
-    khaltiUrl : string | null
+    khaltiUrl : string | null,
+    order : IMyOrder[],
+    singleOrder : IMyOrder | null
 }
 
 export enum PaymentMethod{

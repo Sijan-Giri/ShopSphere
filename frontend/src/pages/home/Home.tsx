@@ -22,9 +22,9 @@ const Home = () => {
     <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold leading-none">Discover Your Next Favorite Product</h1>
     <p className="text-xl lg:text-2xl mt-6 font-light">Shop the latest trends and best deals in fashion, electronics, and more. Our curated selection makes shopping easy and fun, all from the comfort of your home.</p>
     <p className="mt-8 md:mt-12">
-        <button type="button" className="py-4 px-12 bg-teal-500 hover:bg-teal-600 rounded text-white">
+        <a href="#products"><button type="button" className="py-4 px-12 bg-teal-500 hover:bg-teal-600 rounded text-white">
             Start Shopping Now
-        </button>
+        </button></a>
     </p>
     <p className="mt-4 text-gray-600">Free shipping on all orders! Shop with confidence and find exactly what you're looking for.</p>
 </div>

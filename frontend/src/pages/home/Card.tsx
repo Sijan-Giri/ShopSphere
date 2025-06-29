@@ -11,7 +11,7 @@ const Card:React.FC<ICardProps> = ({product}) => {
   <div className="max-w-sm bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
   <div className="w-full h-48 bg-gray-200 flex justify-center items-center">
     {product?.productImage ? (
-      <img className="w-full object-cover" src={`http://localhost:3000/${product?.productImage}`} alt="Product Image" />
+      <img className="w-full object-cover" src={`${product?.productImage}`} alt="Product Image" />
     ) : (
       <span className="text-gray-500">No Image Available</span>
     )}

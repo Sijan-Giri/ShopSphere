@@ -1,12 +1,14 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import { Status, type IOrder, type IOrderData, type IOrderState } from "../globals/types/types";
+import { Status, type IMyOrder, type IOrder, type IOrderData, type IOrderState } from "../globals/types/types";
 import type { AppDispatch } from "./store";
 import { AuthApi } from "../http";
 
 const initialState : IOrderState = {
     item : [],
     status : Status.Loading,
-    khaltiUrl : null
+    khaltiUrl : null,
+    order : [],
+    singleOrder : null
 }
 
 const checkoutSlice = createSlice({
@@ -21,11 +23,17 @@ const checkoutSlice = createSlice({
         },
         setKhaltiUrl(state:IOrderState,action:PayloadAction<string>) {
             state.khaltiUrl = action.payload
+        },
+        setOrder(state:IOrderState,action:PayloadAction<IMyOrder[]>) {
+            state.order = action.payload
+        },
+        setSingleOrder(state:IOrderState,action:PayloadAction<IMyOrder>) {
+            state.singleOrder = action.payload
         }
     }
 })
 
-export const {setItem , setStatus , setKhaltiUrl} = checkoutSlice.actions;
+export const {setItem , setStatus , setKhaltiUrl , setOrder , setSingleOrder} = checkoutSlice.actions;
 export default checkoutSlice.reducer;
 
 export function createOrder(data:IOrderData) {
@@ -53,7 +61,24 @@ export function fetchMyOrders() {
             const response = await AuthApi.get("orders");
             if(response.status == 200) {
                 dispatch(setStatus(Status.Success));
-                dispatch(setItem(response.data.data))
+                dispatch(setOrder(response.data.data))
+            }
+            else {
+                dispatch(setStatus(Status.Error))
+            }
+        } catch (error) {
+            dispatch(setStatus(Status.Error))
+        }
+    }
+}
+
+export function fetchMyOrderDetail(id:string) {
+    return async function fetchMyOrdersThunk(dispatch:AppDispatch) {
+        try {
+            const response = await AuthApi.get(`orders/${id}`);
+            if(response.status == 200) {
+                dispatch(setStatus(Status.Success));
+                dispatch(setSingleOrder(response.data.data))
             }
             else {
                 dispatch(setStatus(Status.Error))

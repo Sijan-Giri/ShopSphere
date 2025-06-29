@@ -5,6 +5,7 @@ import { PaymentMethod, PaymentStatus } from "../../globals/types";
 import Payment from "../database/models/paymentModel";
 import axios from "axios"
 import Cart from "../database/models/cartModel";
+import Product from "../database/models/productModel";
 
 export interface IProduct{
     productId : string
@@ -173,12 +174,27 @@ class OrderController {
 
     static async fetchMyOrderDetails(req:AuthRequest,res:Response) {
         const orderId = req.params.id
-        const orders = await OrderDetail.findAll({
+        const orders = await OrderDetail.findOne({
             where : {
                 orderId
-            }
+            },
+            include : [
+                {
+                    model : Order,
+                    include : [
+                        {
+                            model : Payment,
+                            attributes : ["paymentMethod","paymentStatus"]
+                        }
+                    ],
+                    attributes : ["orderStatus","phoneNumber","totalAmount"]
+                },
+                {
+                    model : Product
+                }
+            ]
         })
-        if(orders.length == 0) {
+        if(!orders) {
             res.status(400).json({
                 message : "No orders found !!"
             })

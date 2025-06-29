@@ -43,7 +43,7 @@ const Navbar = () => {
                 <a className="px-4" href="#products">Products</a>
                 <a className="px-4" href="#services">Services</a>
                 <a className="px-4" href="#stats">Stats</a>
-                <a className="px-4" href="#testimonials">Testimonials</a>
+                <Link to="/my-orders"><a className="px-4">Orders</a></Link>
             </div>
             <div className="flex items-center space-x-4">
                 <Link to="/my-cart">
