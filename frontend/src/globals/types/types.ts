@@ -102,12 +102,30 @@ export interface IMyOrder {
     Payment : IPayment | null
 }
 
+export interface IMyOrderDetails {
+    id : string,
+    quantity : string,
+    orderId : string,
+    productId : string,
+    createdAt : string,
+    Order : {
+        orderStatus : string,
+        phoneNumber : string,
+        totalAmount : number
+    },
+    Payment : {
+        paymentMethod : string,
+        paymentStatus : string
+    },
+    Product : IProduct
+}
+
 export interface IOrderState{
     item : IOrder[],
     status : Status,
     khaltiUrl : string | null,
     order : IMyOrder[],
-    singleOrder : IMyOrder | null
+    singleOrder : IMyOrderDetails[]
 }
 
 export enum PaymentMethod{

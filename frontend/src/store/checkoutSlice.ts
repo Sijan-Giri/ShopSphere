@@ -1,5 +1,5 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import { Status, type IMyOrder, type IOrder, type IOrderData, type IOrderState } from "../globals/types/types";
+import { Status, type IMyOrder, type IMyOrderDetails, type IOrder, type IOrderData, type IOrderState } from "../globals/types/types";
 import type { AppDispatch } from "./store";
 import { AuthApi } from "../http";
 
@@ -8,7 +8,7 @@ const initialState : IOrderState = {
     status : Status.Loading,
     khaltiUrl : null,
     order : [],
-    singleOrder : null
+    singleOrder : []
 }
 
 const checkoutSlice = createSlice({
@@ -27,7 +27,7 @@ const checkoutSlice = createSlice({
         setOrder(state:IOrderState,action:PayloadAction<IMyOrder[]>) {
             state.order = action.payload
         },
-        setSingleOrder(state:IOrderState,action:PayloadAction<IMyOrder>) {
+        setSingleOrder(state:IOrderState,action:PayloadAction<IMyOrderDetails[]>) {
             state.singleOrder = action.payload
         }
     }

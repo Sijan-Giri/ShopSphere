@@ -6,6 +6,7 @@ import Payment from "../database/models/paymentModel";
 import axios from "axios"
 import Cart from "../database/models/cartModel";
 import Product from "../database/models/productModel";
+import Category from "../database/models/categoryModel";
 
 export interface IProduct{
     productId : string
@@ -174,7 +175,7 @@ class OrderController {
 
     static async fetchMyOrderDetails(req:AuthRequest,res:Response) {
         const orderId = req.params.id
-        const orders = await OrderDetail.findOne({
+        const orders = await OrderDetail.findAll({
             where : {
                 orderId
             },
@@ -190,7 +191,13 @@ class OrderController {
                     attributes : ["orderStatus","phoneNumber","totalAmount"]
                 },
                 {
-                    model : Product
+                    model : Product,
+                    include : [
+                        {
+                            model : Category,
+                            attributes : ["categoryName"]
+                        }
+                    ]
                 }
             ]
         })
