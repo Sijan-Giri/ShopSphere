@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/hooks"
 import Navbar from "../navbar/Navbar"
-import { fetchMyOrders } from "../../store/checkoutSlice";
+import { deleteOrder, fetchMyOrders } from "../../store/checkoutSlice";
 import { Link } from "react-router-dom";
 
 const MyOrder = () => {
@@ -9,7 +9,11 @@ const MyOrder = () => {
     const {order : items} = useAppSelector((state) => state.checkout)
     const [searchTerm , setSearchTerm] = useState<string>("");
 
-  const filteredOrder = items?.filter((item) => item?.id.toLowerCase().includes(searchTerm) || item?.orderStatus.toLowerCase().includes(searchTerm) || item?.Payment?.paymentMethod.toLowerCase().includes(searchTerm) || item?.totalAmount.toString().toLowerCase().includes(searchTerm))
+  const filteredOrder = items?.filter((item) => item?.id.toLowerCase().includes(searchTerm) || item?.orderStatus.toLowerCase().includes(searchTerm) || item?.Payment?.paymentMethod.toLowerCase().includes(searchTerm) || item?.totalAmount.toString().toLowerCase().includes(searchTerm));
+
+  const handleDelete = (id:string) => {
+    dispatch(deleteOrder(id))
+  }
 
     useEffect(() => {
         dispatch(fetchMyOrders())
@@ -66,7 +70,7 @@ const MyOrder = () => {
               <p className="text-sm text-slate-500">{item?.Payment?.paymentMethod}</p>
             </td>
             <td className="p-4 border-b border-slate-200 py-5">
-              <button type="button" className="text-slate-500 hover:text-slate-700">
+              <button onClick={() => handleDelete(item?.id)} type="button" className="text-slate-500 hover:text-slate-700">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>

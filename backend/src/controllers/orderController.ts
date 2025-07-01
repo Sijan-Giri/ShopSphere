@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import Order from "../database/models/orderModel";
 import OrderDetail from "../database/models/orderDetailsModel";
-import { PaymentMethod, PaymentStatus } from "../../globals/types";
+import { OrderStatus, PaymentMethod, PaymentStatus } from "../../globals/types";
 import Payment from "../database/models/paymentModel";
 import axios from "axios"
 import Cart from "../database/models/cartModel";
@@ -17,6 +17,10 @@ export interface AuthRequest extends Request {
     user? : {
         id : string
     }
+}
+
+export interface OrderDataPayment extends Order{
+    paymentId : string | null
 }
 
 class OrderController {
@@ -212,6 +216,113 @@ class OrderController {
                 data : orders
             })
         }
+    }
+
+    static async cancelOrder(req:AuthRequest,res:Response) {
+        const {id} = req.params;
+        if(!id) {
+            res.status(400).json({
+                message : "Please provide id"
+            })
+            return
+        }
+        const userId = req.user?.id;
+        const [order] = await Order.findAll({
+            where : {
+                id,
+                userId
+            }
+        })
+        if(!order) {
+            res.status(400).json({
+                message : "You don't have this order"
+            })
+            return
+        }
+        if(order.orderStatus == OrderStatus.Delivered || order.orderStatus == OrderStatus.Ontheway || order.orderStatus == OrderStatus.Preparation) {
+            res.status(400).json({
+                message : "You cannot change order status now sorry!!"
+            })
+            return
+        }
+        await Order.update({orderStatus : OrderStatus.Cancelled},{
+            where : {
+                id
+            }
+        })
+        res.status(200).json({
+            message : "Order status updated successfully !!"
+        })
+    }
+
+    static async changeOrderStatus(req:AuthRequest,res:Response) {
+        const {id} = req.params;
+        if(!id) {
+            res.status(400).json({
+                message : "Please provide id !!"
+            })
+            return
+        }
+        const {orderStatus} = req.body;
+        if(!orderStatus) {
+            res.status(400).json({
+                message : "Please provide order status"
+            })
+            return 
+        }
+        const [order] = await Order.findAll({
+            where : {
+                id
+            }
+        })
+        if(!order) {
+            res.status(400).json({
+                message : "Order with this id doesn't exists !!"
+            })
+            return
+        }
+        order.orderStatus = orderStatus
+        await order.save();
+
+        res.status(200).json({
+            message : "Order status changed successfully !!"
+        })
+    }
+
+    static async deleteOrder(req:AuthRequest,res:Response) {
+        const {id} = req.params;
+        if(!id) {
+            res.status(400).json({
+                message : "Please provide id !!"
+            })
+            return
+        }
+        const order : OrderDataPayment = await Order.findByPk(id) as OrderDataPayment
+        const paymentId = order.paymentId
+        if(!order) {
+            res.status(400).json({
+                message : "You don't have this order !!"
+            })
+            return
+        }
+        await OrderDetail.destroy({
+            where : {
+                orderId : id
+            }
+        })
+        await Order.destroy({
+            where : {
+                id
+            }
+        })
+        await Payment.destroy({
+            where : {
+                id : paymentId
+            }
+        })
+        res.status(200).json({
+            message : "Order deleted successfully!!"
+        })
     }
 }
 

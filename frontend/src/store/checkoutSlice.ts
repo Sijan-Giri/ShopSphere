@@ -88,3 +88,35 @@ export function fetchMyOrderDetail(id:string) {
         }
     }
 }
+
+export function cancelMyOrder(id : string) {
+    return async function cancelMyOrderThunk(dispatch:AppDispatch) {
+        try {
+            const response = await AuthApi.post(`orders/cancel-order/${id}`);
+            if(response.status == 200) {
+                dispatch(setStatus(Status.Success))
+            }
+            else {
+                dispatch(setStatus(Status.Error))
+            }
+        } catch (error) {
+            dispatch(setStatus(Status.Error))
+        }
+    }
+}
+
+export function deleteOrder(id:string) {
+    return async function deleteOrderThunk(dispatch:AppDispatch) {
+        try {
+            const response = await AuthApi.delete(`orders/delete-order/${id}`);
+            if(response.status == 200) {
+                dispatch(setStatus(Status.Success))
+            }
+            else {
+                dispatch(setStatus(Status.Error))
+            }
+        } catch (error) {
+            dispatch(setStatus(Status.Error))
+        }
+    }
+}
