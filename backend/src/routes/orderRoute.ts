@@ -12,7 +12,7 @@ router.route("/")
 router.route("/verify-transaction")
 .post(UserAuthentication.isAuthenticated,errorHandler(OrderController.verifyTransaction))
 
-router.route("/:id")
+router.route("/:id")    
 .get(UserAuthentication.isAuthenticated,OrderController.fetchMyOrderDetails)
 
 router.route("/cancel-order/:id")
