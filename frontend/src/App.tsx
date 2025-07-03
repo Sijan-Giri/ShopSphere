@@ -9,6 +9,12 @@ import MyCart from "./pages/cart/MyCart"
 import Checkout from "./pages/checkout/Checkout"
 import MyOrder from "./pages/order/MyOrder"
 import MyOrderDetail from "./pages/order/MyOrderDetail"
+import AdminStats from "./pages/admin"
+import AdminProduct from "./pages/admin/components/AdminProduct"
+import AdminCategory from "./pages/admin/AdminCategory"
+import AdminUser from "./pages/admin/components/AdminUser"
+import AdminPayment from "./pages/admin/components/AdminPayment"
+import AdminOrder from "./pages/admin/components/AdminOrder"
 
 function App() {
 
@@ -25,6 +31,12 @@ function App() {
       <Route path="/my-checkout" element={<Checkout />}/>
       <Route path="/my-orders" element={<MyOrder />}/>
       <Route path="/my-order/:id" element={<MyOrderDetail />}/>
+      <Route path="/admin/products" element={<AdminProduct />}/>
+      <Route path="/admin/users" element={<AdminUser />}/>
+      <Route path="/admin/orders" element={<AdminOrder />}/>
+      <Route path="/admin/payment" element={<AdminPayment />}/>
+      <Route path="/admin/categories" element={<AdminCategory />}/>
+      <Route path="/admin" element={<AdminStats />}/>
      </Routes>
      </BrowserRouter>
      </Provider>
