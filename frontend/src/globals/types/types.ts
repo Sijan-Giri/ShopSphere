@@ -18,7 +18,9 @@ export interface IUserState {
 
 export interface ICategory{
     id : string,
-    categoryName : string
+    categoryName : string,
+    createdAt : string,
+    updatedAt : string
 }
 
 export interface IProduct{
