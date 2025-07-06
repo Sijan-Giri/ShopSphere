@@ -1,13 +1,26 @@
 import type React from "react"
 import Sidebar from "./Sidebar"
+import { useState } from "react"
+import Model from "./Model";
 
 function AdminLayout({children}:Readonly<{children : React.ReactNode}>) {
+  
+  const [isModelOpen , setIsModelOpen] = useState(false);
+
+  const openModel = () => {
+    setIsModelOpen(true)
+  }
+
+  const closeModel = () => {
+    setIsModelOpen(false)
+  }
+
     return (
         <div>
   <div className="flex h-screen bg-gray-100">
     <div className="hidden md:flex flex-col w-64 bg-gray-800">
       <div className="flex items-center justify-center h-16 bg-gray-900">
-        <span className="text-white font-bold uppercase">Daystar Dashboard</span>
+        <span className="text-white font-bold uppercase">Admin Dashboard</span>
       </div>
       <Sidebar />
     </div>
@@ -16,10 +29,9 @@ function AdminLayout({children}:Readonly<{children : React.ReactNode}>) {
       <div className="flex items-center justify-between h-16 bg-white border-b border-gray-200">
         <div className="flex items-center px-4"></div>
         <div className="flex items-center pr-4">
-          <button className="flex items-center text-gray-500 hover:text-gray-700 focus:outline-none focus:text-gray-700">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l-7-7 7-7m5 14l7-7-7-7" />
-            </svg>
+          <button className="flex items-center text-gray-950-500 hover:caret-amber-50  focus:text-white-700">
+            {isModelOpen && <Model closeModel={closeModel} />}
+            <button onClick={openModel} className="border-black cursor-pointer text-amber-50 p-3 bg-blue-800 border-radius-50">+ Category</button>
           </button>
         </div>
       </div>

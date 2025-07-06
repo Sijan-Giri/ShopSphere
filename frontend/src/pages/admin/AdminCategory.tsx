@@ -1,44 +1,28 @@
 import { useEffect, useState } from "react"
 import AdminLayout from "./components/AdminLayout"
-import { AuthApi } from "../../http";
-import type { ICategory } from "../../globals/types/types";
+import { deleteCategory, fetchCategories } from "../../store/adminCategorySlice";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 
 const AdminCategory = () => {
 
-  const [categories , setCategories] = useState<ICategory[]>([]);
+  const dispatch = useAppDispatch()
+
+  const {category:categories} = useAppSelector((state) => state.categories)
 
   const [searchItem , setSearchItem] = useState('');
 
   const filteredCategories = categories?.filter((category) => (category?.categoryName).toLowerCase().includes(searchItem) || (category?.id).toLowerCase().includes(searchItem))
-
-  const fetchCategories = async() => {
-    try {
-      const response = await AuthApi.get("category");
-      if(response.status == 200) {
-        setCategories(response.data.data)
-      }
-      else {
-        setCategories([])
-      }
-    } catch (error) {
-      setCategories([])
-    }
-  }
 
   const handleChange = (data:any) => {
     setSearchItem(data)
   }
   
   const handleDelete = async(id:string) => {
-    try {
-      await AuthApi.delete(`category/${id}`);
-    } catch (error) {
-      console.log(error)
-    }
+    dispatch(deleteCategory(id))
   }
 
   useEffect(() => {
-    fetchCategories()
+    dispatch(fetchCategories())
   },[])
 
   return (

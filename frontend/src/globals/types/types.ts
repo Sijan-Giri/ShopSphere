@@ -134,3 +134,8 @@ export enum PaymentMethod{
     Khalti = "khalti",
     Cod = "cod"
 }
+
+export interface ICategoryState{
+    category : ICategory[],
+    status : Status
+}
