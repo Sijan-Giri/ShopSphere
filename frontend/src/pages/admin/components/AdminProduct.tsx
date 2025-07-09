@@ -1,6 +1,5 @@
 import AdminLayout from "./AdminLayout"
 
-
 const AdminProduct = () => {
   return (
     <>

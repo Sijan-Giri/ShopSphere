@@ -1,19 +1,7 @@
 import type React from "react"
 import Sidebar from "./Sidebar"
-import { useState } from "react"
-import Model from "./Model";
 
 function AdminLayout({children}:Readonly<{children : React.ReactNode}>) {
-  
-  const [isModelOpen , setIsModelOpen] = useState(false);
-
-  const openModel = () => {
-    setIsModelOpen(true)
-  }
-
-  const closeModel = () => {
-    setIsModelOpen(false)
-  }
 
     return (
         <div>
@@ -24,15 +12,11 @@ function AdminLayout({children}:Readonly<{children : React.ReactNode}>) {
       </div>
       <Sidebar />
     </div>
-    {/* Main content */}
     <div className="flex flex-col flex-1 overflow-y-auto">
       <div className="flex items-center justify-between h-16 bg-white border-b border-gray-200">
         <div className="flex items-center px-4"></div>
         <div className="flex items-center pr-4">
-          <button className="flex items-center text-gray-950-500 hover:caret-amber-50  focus:text-white-700">
-            {isModelOpen && <Model closeModel={closeModel} />}
-            <button onClick={openModel} className="border-black cursor-pointer text-amber-50 p-3 bg-blue-800 border-radius-50">+ Category</button>
-          </button>
+          
         </div>
       </div>
       <div className="p-4">

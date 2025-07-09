@@ -184,6 +184,51 @@ class UserController{
             message : "Password reset successfully"
         })
     }
+
+    static async fetchAllUsers(req:Request,res:Response) {
+        const data = await User.findAll();
+
+        if(data.length == 0) {
+            res.status(404).json({
+                message : "Datas not found !!"
+            })
+            return 
+        }
+
+        res.status(200).json({
+            message : "Users fetched successfully !!",
+            data
+        })
+    }
+
+    static async deleteUser(req:Request,res:Response) {
+        const {id} = req.params;
+        if(!id) {
+            res.status(400).json({
+                message : "Please provide id"
+            })
+            return
+        }
+        const userExists = await User.findAll({
+            where : {
+                id
+            }
+        })
+        if(userExists.length == 0){
+            res.status(404).json({
+                message : "User not found with this id !!"
+            })
+            return
+        }
+        await User.destroy({
+            where : {
+                id
+            }
+        })
+        res.status(200).json({
+            message : "User deleted successfully !!"
+        })
+    }
 }
 
 export default UserController

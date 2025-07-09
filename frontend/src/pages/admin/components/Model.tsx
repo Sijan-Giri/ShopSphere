@@ -1,8 +1,7 @@
-import { useState, type ChangeEvent, type FormEvent } from "react"
+import { useState,type FormEvent } from "react"
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { addCategory } from "../../../store/adminCategorySlice";
 import { Status } from "../../../globals/types/types";
-import { useNavigate } from "react-router-dom";
 
 interface ModelProps{
   closeModel : () => void
@@ -13,7 +12,6 @@ const Model:React.FC<ModelProps>= ({closeModel} : ModelProps) => {
   const [category , setCategory] = useState<string>('');
   const {status} = useAppSelector((state) => state.categories)
   const dispatch = useAppDispatch();
-  const navigate = useNavigate()
 
   const handleSubmit = (e:FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -47,7 +45,7 @@ const Model:React.FC<ModelProps>= ({closeModel} : ModelProps) => {
         <button onClick={closeModel} id="cancelButton" className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600">
           Cancel
         </button>
-        <button id="submitUrlButton" className="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-md bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 dark:from-indigo-500 dark:to-violet-500 dark:hover:from-indigo-600 dark:hover:to-violet-600">
+        <button id="submitUrlButton" className="flex items-center justify-center px-4 py-2 cursor-pointer text-sm font-medium text-white rounded-md bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 dark:from-indigo-500 dark:to-violet-500 dark:hover:from-indigo-600 dark:hover:to-violet-600">
           Add 
           <svg className="h-4 w-4 inline-block ml-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
             <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />

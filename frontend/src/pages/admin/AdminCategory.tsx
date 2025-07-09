@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import AdminLayout from "./components/AdminLayout"
 import { deleteCategory, fetchCategories } from "../../store/adminCategorySlice";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import Model from "./components/Model";
 
 const AdminCategory = () => {
 
@@ -21,6 +22,16 @@ const AdminCategory = () => {
     dispatch(deleteCategory(id))
   }
 
+    const [isModelOpen , setIsModelOpen] = useState(false);
+
+  const openModel = useCallback(() => {
+    setIsModelOpen(true)
+  },[])
+
+  const closeModel = useCallback(() => {
+    setIsModelOpen(false)
+  },[])
+
   useEffect(() => {
     dispatch(fetchCategories())
   },[])
@@ -29,17 +40,14 @@ const AdminCategory = () => {
     <>
     <AdminLayout>
         <div className="flex flex-col">
-  <div className=" overflow-x-auto">
-    <div className="min-w-full inline-block align-middle">
-      <div className="relative  text-gray-500 focus-within:text-gray-900 mb-4">
-        <div className="absolute inset-y-0 left-1 flex items-center pl-3 pointer-events-none ">
-          <svg className="w-5 h-5" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M17.5 17.5L15.4167 15.4167M15.8333 9.16667C15.8333 5.48477 12.8486 2.5 9.16667 2.5C5.48477 2.5 2.5 5.48477 2.5 9.16667C2.5 12.8486 5.48477 15.8333 9.16667 15.8333C11.0005 15.8333 12.6614 15.0929 13.8667 13.8947C15.0814 12.6872 15.8333 11.0147 15.8333 9.16667Z" stroke="#9CA3AF" strokeWidth="1.6" strokeLinecap="round" />
-            <path d="M17.5 17.5L15.4167 15.4167M15.8333 9.16667C15.8333 5.48477 12.8486 2.5 9.16667 2.5C5.48477 2.5 2.5 5.48477 2.5 9.16667C2.5 12.8486 5.48477 15.8333 9.16667 15.8333C11.0005 15.8333 12.6614 15.0929 13.8667 13.8947C15.0814 12.6872 15.8333 11.0147 15.8333 9.16667Z" stroke="black" strokeOpacity="0.2" strokeWidth="1.6" strokeLinecap="round" />
-            <path d="M17.5 17.5L15.4167 15.4167M15.8333 9.16667C15.8333 5.48477 12.8486 2.5 9.16667 2.5C5.48477 2.5 2.5 5.48477 2.5 9.16667C2.5 12.8486 5.48477 15.8333 9.16667 15.8333C11.0005 15.8333 12.6614 15.0929 13.8667 13.8947C15.0814 12.6872 15.8333 11.0147 15.8333 9.16667Z" stroke="black" strokeOpacity="0.2" strokeWidth="1.6" strokeLinecap="round" />
-          </svg>
-        </div>
+      <div className=" overflow-x-auto">
+        {isModelOpen && <Model closeModel={closeModel} />}
+        <div className="min-w-full inline-block align-middle">
+      <div className="relative  text-gray-500 focus-within:text-gray-900 mb-4">        
         <input onChange={(e) => handleChange(e.target.value)} type="text" id="default-search" className="block w-80 h-11 pr-5 pl-12 py-2.5 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none" placeholder="Search for category" />
+        <button className="flex items-center text-gray-950-500 hover:caret-amber-50 ml-280 pr-5 focus:text-white-700">
+            <button onClick={openModel} className="border-black cursor-pointer text-amber-50 p-3 bg-blue-800 border-radius-50">+ Category</button>
+          </button>
       </div>
       <div className="overflow-hidden ">
         <table className=" min-w-full rounded-xl">

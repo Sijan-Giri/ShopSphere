@@ -18,6 +18,9 @@ const adminCategorySlice = createSlice({
         setStatus(state:ICategoryState,action:PayloadAction<Status>) {
             state.status = action.payload
         },
+        setAddCategoryItem(state:ICategoryState,action:PayloadAction<ICategory>) {
+          state.category.push(action.payload)
+        },
         setDeleteCategory(state:ICategoryState,action:PayloadAction<string>) {
             const index = state.category.findIndex((data) => data.id == action.payload);
             if(index !== -1) {
@@ -27,7 +30,7 @@ const adminCategorySlice = createSlice({
     }
 })
 
-export const {setCategory , setStatus , setDeleteCategory} = adminCategorySlice.actions;
+export const {setCategory , setStatus , setDeleteCategory , setAddCategoryItem} = adminCategorySlice.actions;
 export default adminCategorySlice.reducer;
 
 export function fetchCategories() {
@@ -70,7 +73,7 @@ export function addCategory(categoryName:string) {
               const response = await AuthApi.post(`category`,{categoryName});
               if(response.status == 200) {
                 dispatch(setStatus(Status.Success))
-                dispatch(setCategory(response.data.data))
+                dispatch(setAddCategoryItem(response.data.data))
               }
               else {
                 dispatch(setStatus(Status.Error))
