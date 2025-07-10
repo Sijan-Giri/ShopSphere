@@ -99,8 +99,7 @@ const AdminCategory = () => {
       </div>
     </div>
   </div>
-</div>
-
+        </div>
     </AdminLayout>
     </>
   )
