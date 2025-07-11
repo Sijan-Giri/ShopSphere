@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from "react"
-import AdminLayout from "./components/AdminLayout"
-import { deleteCategory, fetchCategories } from "../../store/adminCategorySlice";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import Model from "./components/Model";
+import AdminLayout from "./AdminLayout"
+import { deleteCategory, fetchCategories } from "../../../store/adminCategorySlice";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import Model from "./Model";
 
 const AdminCategory = () => {
 

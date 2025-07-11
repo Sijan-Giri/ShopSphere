@@ -24,7 +24,7 @@ export interface ICategory{
 }
 
 export interface IProduct{
-    id : string,
+    id ?: string,
     productName : string,
     productDescription : string,
     productPrice : number,
@@ -32,7 +32,7 @@ export interface IProduct{
     productDiscount : number,
     productImage ?: string,
     CategoryId : string,
-    Category : ICategory
+    Category ?: ICategory
 }
 
 export interface IProductState{
