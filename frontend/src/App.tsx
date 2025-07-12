@@ -15,6 +15,7 @@ import AdminCategory from "./pages/admin/components/AdminCategory"
 import AdminUser from "./pages/admin/components/AdminUser"
 import AdminPayment from "./pages/admin/components/AdminPayment"
 import AdminOrder from "./pages/admin/components/AdminOrder"
+import AdminSingleProduct from "./pages/admin/components/AdminSingleProduct"
 
 function App() {
 
@@ -37,6 +38,7 @@ function App() {
       <Route path="/admin/payment" element={<AdminPayment />}/>
       <Route path="/admin/categories" element={<AdminCategory />}/>
       <Route path="/admin" element={<AdminStats />}/>
+      <Route path="/admin/product-detail/:id" element={<AdminSingleProduct />}/>
      </Routes>
      </BrowserRouter>
      </Provider>

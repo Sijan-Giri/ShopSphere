@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../../store/hooks"
 import AdminLayout from "./AdminLayout"
 import { deleteProduct, fetchAllProducts } from "../../../store/adminProductSlice";
 import AdminProductModel from "./AdminProductModel";
+import { Link } from "react-router-dom";
 
 const AdminProduct = () => {
 
@@ -57,7 +58,7 @@ const AdminProduct = () => {
                 return (
                   <>
                        <tr className="bg-white transition-all duration-500 hover:bg-gray-50">
-              <td className="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900 ">{product?.productName}</td>
+              <Link to={`/admin/product-detail/${product?.id}`}><td className="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900 ">{product?.productName}</td></Link>
               <td className="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900"> {product?.id }</td>
               <td className="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900" >{product?.productPrice} </td>
               <td className="p-5 whitespace-nowrap text-sm leading-6 font-medium text-gray-900"> {product?.productStockQty}</td>

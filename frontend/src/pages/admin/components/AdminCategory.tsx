@@ -22,7 +22,7 @@ const AdminCategory = () => {
     dispatch(deleteCategory(id))
   }
 
-    const [isModelOpen , setIsModelOpen] = useState(false);
+  const [isModelOpen , setIsModelOpen] = useState(false);
 
   const openModel = useCallback(() => {
     setIsModelOpen(true)

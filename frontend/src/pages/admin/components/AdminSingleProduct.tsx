@@ -1,32 +1,23 @@
-import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../../store/hooks"
-import Navbar from "../navbar/Navbar"
-import { fetchProduct } from "../../store/productSlice";
-import { useParams } from "react-router-dom";
-import { addToCart } from "../../store/cartSlice";
+import { useEffect } from "react"
+import AdminLayout from "./AdminLayout"
+import { useAppDispatch, useAppSelector } from "../../../store/hooks"
+import { fetchAdminProduct } from "../../../store/adminProductSlice"
+import { useParams } from "react-router-dom"
 
-const ProductDetail = () => {
+const AdminSingleProduct = () => {
 
     const dispatch = useAppDispatch();
-    const {singleProduct} = useAppSelector((state) => state.product)
     const {id} = useParams();
-
-    const handleClick = () => {
-      if(id) {
-        dispatch(addToCart(id))
-      }
-    }
+    const {singleProduct} = useAppSelector((state) => state.adminProduct)
 
     useEffect(() => {
-            if(id) {
-                dispatch(fetchProduct(id))
-            }
+        id && dispatch(fetchAdminProduct(id))
     },[])
 
-return (
-<>
-<Navbar />
-<section className="font-['Poppins'] flex items-center justify-center bg-black bg-opacity-20 h-[100vh]">
+  return (
+    <>
+    <AdminLayout>
+    <section className="font-['Poppins'] flex items-center justify-center bg-black bg-opacity-20 h-[100vh]">
   <div className="flex w-[1300px] p-10 bg-white border-gray-400 rounded-xl border-2">
     <div className="flex flex-col gap-14 items-center">
       <svg width={16} height={10} viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -81,7 +72,7 @@ return (
             </svg>
           </button>
         </div>
-        <button onClick={handleClick} className="h-[51px] px-20 py-4 bg-[#00b206] rounded-[43px] justify-center items-center gap-4 flex">
+        <button className="h-[51px] px-20 py-4 bg-[#00b206] rounded-[43px] justify-center items-center gap-4 flex">
           <span className="text-white text-base font-semibold leading-tight">Add to Cart</span>
           <div>
             <svg width={17} height={18} viewBox="0 0 17 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -104,10 +95,9 @@ return (
     </div>
   </div>
 </section>
-
-
-</>
+    </AdminLayout>
+    </>
   )
 }
 
-export default ProductDetail
+export default AdminSingleProduct
