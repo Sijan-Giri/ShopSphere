@@ -7,7 +7,8 @@ const router = express.Router();
 
 router.route("/")
 .post(UserAuthentication.isAuthenticated,errorHandler(OrderController.createOrder))
-.get(UserAuthentication.isAuthenticated,OrderController.fetchMyOrders);
+.get(UserAuthentication.isAuthenticated,OrderController.fetchMyOrders)
+.get(UserAuthentication.isAuthenticated,UserAuthentication.restrictTo(Role.Admin) , OrderController.fetchAllOrders);
 
 router.route("/verify-transaction")
 .post(UserAuthentication.isAuthenticated,errorHandler(OrderController.verifyTransaction))

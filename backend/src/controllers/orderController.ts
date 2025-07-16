@@ -324,6 +324,21 @@ class OrderController {
             message : "Order deleted successfully!!"
         })
     }
+
+    static async fetchAllOrders(req:AuthRequest,res:Response) {
+        const orderExists = await Order.findAll();
+        if(orderExists.length == 0) {
+            res.status(404).json({
+                message : "Order not found !!"
+            })
+            return
+        }
+
+        res.status(200).json({
+            message : "Order fetched successfully !!",
+            data : orderExists
+        })
+    }
 }
 
 export default OrderController
